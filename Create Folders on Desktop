@@ -1,19 +1,37 @@
 import os
+import csv
+import pandas as pd
+dir= 'C:/Users/jeremy.singh/Desktop'
+os.chdir(dir)
+file = "C:/Users/jeremy.singh/Desktop/Specs_Check"
+file2 = "C:/Users/jeremy.singh/Desktop/Specs_Word"
 
-directory="C:/Users/jeremy.singh/Desktop/Specs_Word"
-#This sets workspace
-os.chdir(directory)
-#Changes works space
-def createFolder(directory):
-    try:
-        if not os.path.exists(directory):
-            #tests to see if exists
-            os.makedirs(directory)
-            #Makes directory or folder
-    except OSError:
-        print( "error")
+list1=[]
+pdf_test=[]
+list2=[]
+word_test=[]
+results=[]
+for root, dirs, files in os.walk(file):
+          list1.append(files)
 
 
-for x in range(1,21):
-    name = "Division "+ str(x)
-    createFolder(name)
+for root, dirs, files in os.walk(file2):
+          list2.append(files)
+
+for x in list1:
+    pdf_test.extend(x)
+
+for x in list2:
+    word_test.extend(x)
+
+pdf_list=[x[:-4] for x in pdf_test]
+word_list=[x[:-5] for x in word_test]
+#print(pdf_list)
+#print(word_list)
+
+for x in pdf_list:
+    for y in word_list:
+        if x not in y:
+          results.append(y)
+df=pd.DataFrame(results, columns=["column"])
+df.to_csv('list.csv', index=False)
