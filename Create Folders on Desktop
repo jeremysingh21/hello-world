@@ -1,0 +1,19 @@
+import os
+
+directory="C:/Users/jeremy.singh/Desktop/Specs_Word"
+#This sets workspace
+os.chdir(directory)
+#Changes works space
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            #tests to see if exists
+            os.makedirs(directory)
+            #Makes directory or folder
+    except OSError:
+        print( "error")
+
+
+for x in range(1,21):
+    name = "Division "+ str(x)
+    createFolder(name)
