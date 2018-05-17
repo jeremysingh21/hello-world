@@ -1,0 +1,31 @@
+import os
+import csv
+import pandas as pd
+
+
+dir= 'C:/Users/jeremy.singh/Desktop'
+os.chdir(dir)
+file = "C:/Users/jeremy.singh/Desktop/Specs_Check"
+
+list1=[]
+results=[]
+
+for root, dirs, files in os.walk(file):
+          list1.extend(files)
+
+for x in list1:
+   results.append(x)
+
+for x in results:
+    
+
+    if '(' in x:
+        y=[x.split('(')[1]]
+        df=pd.DataFrame(y, columns=["column"])
+        df.to_csv('list.csv', index=False)
+    else:
+        df=pd.DataFrame(results, columns=["column"])
+        df.to_csv('rejects.csv', index=False)
+results=[x[:-5] for x in list1]
+
+print(results)
