@@ -1,0 +1,28 @@
+import os
+import re
+import PyPDF2
+import pandas as pd
+dir= 'C:/Users/jeremy.singh/Desktop/OCR_Check'
+os.chdir(dir)
+file = "C:/Users/jeremy.singh/Desktop/OCR_Check"
+
+
+# with open('Divisions 1 thru 5.pdf', 'rb') as f:
+#     pdfReader=PyPDF2.PdfFileReader(f)
+#     pageObj=pdfReader.getPage()
+#     text=pageObj.extractText()
+#
+# print(text)
+
+
+
+pdfFileObj = open('Divisions 1 thru 5.pdf', 'rb')
+pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+print("Number of pages:-"+str(pdfReader.numPages))
+num = pdfReader.numPages
+i =0
+while(i<num):
+    pageObj = pdfReader.getPage(i)
+    text=pageObj.extractText()
+    print (text)
+    i= i+1
