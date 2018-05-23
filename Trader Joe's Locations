@@ -1,0 +1,58 @@
+from bs4 import BeautifulSoup
+import urllib2
+import csv
+import time
+from lxml import html
+import requests
+
+print 'Start time: ',time.strftime('%X %x %Z')
+linklist = [] #all links on page
+locationsurl = [] #all links of locations
+state=[]
+city=[]
+add=[]
+final=[]
+
+addresslist = [] #all addresses
+
+html_page = urllib2.urlopen("http://locations.traderjoes.com/")
+
+soup = BeautifulSoup(html_page, "html.parser")
+for link in soup.findAll('a'):
+     linklist.append(link.get('href')) #get links from <a element
+
+
+for loc in linklist: #picks out the locations only
+    if '/locations.traderjoes.com/' in str(loc):
+        locationsurl.append(loc)
+
+
+for cities in locationsurl:
+    y=urllib2.urlopen(cities)
+    z=BeautifulSoup(y,"html.parser")
+    for test in z.findAll('a'):
+        if'/locations.traderjoes.com/' in str(test):
+                state.append(test.get('href'))
+
+for x in state:
+    if len(x) > 35:
+        city.append(x)
+
+
+for x in city:
+    page= requests.get(x)
+    tree=html.fromstring(page.content)
+    test= tree.xpath('//span/text()')
+    add.append(test)
+for x in add:
+    final.append(x[7:11])
+print (final)
+
+with open('TJ.csv', 'wb') as f:
+    writer=csv.writer(f, lineterminator='\n')
+    writer.writerow(['Address', 'City', 'State', 'Zip'])
+    writer.writerows(final)
+# print(add)
+# print(add[7:11])
+
+print 'End time: ',time.strftime('%X %x %Z')
